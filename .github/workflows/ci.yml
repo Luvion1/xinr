@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: -D warnings
+
+jobs:
+  check:
+    name: Lint + Build + Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        run: rustup toolchain install stable --profile minimal --component clippy rustfmt
+      - name: Cache cargo registry & target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Format check
+        run: cargo fmt --check
+      - name: Clippy (alloc)
+        run: cargo clippy --features alloc --all-targets -- -D warnings
+      - name: Clippy (no_std)
+        run: cargo clippy --no-default-features --lib --tests -- -D warnings
+      - name: Build (alloc)
+        run: cargo build --features alloc
+      - name: Build (no_std)
+        run: cargo build --no-default-features
+      - name: Test (alloc)
+        run: cargo test --features alloc
+      - name: Examples (alloc)
+        run: for ex in basic_gc channel_demo full_pipeline slab_demo scheduler_demo select_demo pingpong gc_worker cache_demo producer_consumer shutdown_coord gc_relocate_bench metrics_report; do cargo run --features alloc --example $ex; done

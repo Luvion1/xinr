@@ -1,0 +1,11 @@
+# Limit build/test parallelism to a single core/thread to avoid OOM on
+# memory-constrained CI / sandbox environments. Override per-invocation
+# with `cargo build -j 4` or by passing `--jobs N`.
+[build]
+jobs = 1
+
+[test]
+jobs = 1
+
+[env]
+RUST_TEST_THREADS = "1"

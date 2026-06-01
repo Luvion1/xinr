@@ -1,0 +1,17 @@
+# Build artifacts
+/target/
+**/*.rs.bk
+Cargo.lock.bak
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local overrides
+.cargo/config.local.toml
