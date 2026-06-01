@@ -1,5 +1,8 @@
 # xinr — Xin runtime
 
+[![CI](https://github.com/Luvion1/xinr/actions/workflows/ci.yml/badge.svg)](https://github.com/Luvion1/xinr/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Luvion1/xinr)](https://github.com/Luvion1/xinr/releases)
+
 `xinr` is a `no_std`-friendly runtime library for the Xin ecosystem.
 
 - **XGC** — ZGC-inspired concurrent, region-based, colored-pointer GC (24 subsystems)
