@@ -41,4 +41,4 @@ jobs:
       - name: Test (alloc)
         run: cargo test --features alloc
       - name: Examples (alloc)
-        run: for ex in basic_gc channel_demo full_pipeline slab_demo scheduler_demo select_demo pingpong gc_worker cache_demo producer_consumer shutdown_coord gc_relocate_bench metrics_report; do cargo run --features alloc --example $ex; done
+        run: for ex in basic_gc channel_demo full_pipeline slab_demo scheduler_demo select_demo select_send_demo pingpong gc_worker cache_demo producer_consumer shutdown_coord gc_relocate_bench metrics_report; do cargo run --features alloc --example $ex; done

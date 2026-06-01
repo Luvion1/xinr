@@ -50,7 +50,9 @@ pub use rwlock::guard::{ReadGuard, WriteGuard};
 pub use rwlock::state::RwState;
 pub use scheduler::Scheduler;
 pub use scope::{JoinState, Scope, Task};
-pub use select::{SelectResult, select_recv_4, select_recv_8};
+pub use select::{
+    SelectResult, SendResult, select_recv_4, select_recv_8, select_send_4, select_send_8,
+};
 pub use semaphore::Semaphore;
 pub use spsc::{MpscChannel, SpscChannel};
 pub use timed_join::{TimedJoin, try_join_with_timeout};
