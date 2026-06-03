@@ -14,6 +14,7 @@ mod pin;
 mod pressure;
 mod profile;
 mod relocate;
+mod sched;
 mod slab;
 mod stress;
 mod tune;
