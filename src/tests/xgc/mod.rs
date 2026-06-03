@@ -9,6 +9,7 @@ mod finalize;
 mod log;
 mod mark;
 mod object;
+mod page;
 mod pin;
 mod relocate;
 mod slab;
