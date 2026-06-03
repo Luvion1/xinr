@@ -3,6 +3,7 @@
 mod barrier;
 mod card;
 mod diagnostics;
+mod log;
 mod mark;
 mod object;
 mod pin;
