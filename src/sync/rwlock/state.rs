@@ -51,7 +51,7 @@ impl RwState {
     }
 
     /// Try to acquire a read lock. `&self` so multiple read guards can coexist.
-    /// Returns false if a writer holds it.
+    /// Returns false if a writer holds it or the reader count is saturated.
     pub fn try_read(&self) -> bool {
         if self.writer != 0 {
             return false;
@@ -59,7 +59,10 @@ impl RwState {
         unsafe {
             let r = self.readers.get();
             let cur = *r;
-            *r = cur.wrapping_add(1).max(1);
+            if cur >= i32::MAX {
+                return false;
+            }
+            *r = cur + 1;
             true
         }
     }

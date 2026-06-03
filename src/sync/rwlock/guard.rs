@@ -1,4 +1,3 @@
-//! Read guard returned by a successful read lock. Must call `release()`.
 pub struct ReadGuard<'a> {
     state: &'a super::state::RwState,
     released: bool,
@@ -6,29 +5,23 @@ pub struct ReadGuard<'a> {
 
 impl<'a> ReadGuard<'a> {
     pub(crate) fn new(state: &'a super::state::RwState) -> Self {
-        Self {
-            state,
-            released: false,
+        Self { state, released: false }
+    }
+
+    pub fn is_released(&self) -> bool { self.released }
+    pub fn reader_count(&self) -> u32 { self.state.reader_count() }
+    pub fn is_write_held(&self) -> bool { self.state.is_write() }
+
+    pub fn release(mut self) {
+        if !self.released {
+            self.state.release_read();
+            self.released = true;
         }
     }
+}
 
-    /// Whether the lock has been released.
-    pub fn is_released(&self) -> bool {
-        self.released
-    }
-
-    /// Current reader count.
-    pub fn reader_count(&self) -> u32 {
-        self.state.reader_count()
-    }
-
-    /// Whether the lock is held by a writer.
-    pub fn is_write_held(&self) -> bool {
-        self.state.is_write()
-    }
-
-    /// Explicitly release the read lock.
-    pub fn release(mut self) {
+impl<'a> Drop for ReadGuard<'a> {
+    fn drop(&mut self) {
         if !self.released {
             self.state.release_read();
             self.released = true;

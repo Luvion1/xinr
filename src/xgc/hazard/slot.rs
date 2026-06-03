@@ -1,42 +1,36 @@
 //! Single hazard slot.
 
-use core::sync::atomic::{AtomicPtr, Ordering};
+use core::sync::atomic::{AtomicBool, AtomicPtr, Ordering};
 
-/// One hazard pointer slot.
 pub struct HazardSlot {
     ptr: AtomicPtr<u8>,
-    active: bool,
+    active: AtomicBool,
 }
 
 impl HazardSlot {
-    /// Construct an inactive slot.
     pub const fn new() -> Self {
         Self {
             ptr: AtomicPtr::new(core::ptr::null_mut()),
-            active: false,
+            active: AtomicBool::new(false),
         }
     }
 
-    /// Whether the slot is currently active.
     pub fn is_active(&self) -> bool {
-        self.active
+        self.active.load(Ordering::Acquire)
     }
 
-    /// Read the protected pointer.
     pub fn get(&self) -> *mut u8 {
         self.ptr.load(Ordering::Acquire)
     }
 
-    /// Publish a protected pointer.
     pub fn publish<T>(&mut self, p: *mut T) {
         self.ptr.store(p as *mut u8, Ordering::Release);
-        self.active = true;
+        self.active.store(true, Ordering::Release);
     }
 
-    /// Clear the protected pointer.
     pub fn clear(&mut self) {
         self.ptr.store(core::ptr::null_mut(), Ordering::Release);
-        self.active = false;
+        self.active.store(false, Ordering::Release);
     }
 }
 
