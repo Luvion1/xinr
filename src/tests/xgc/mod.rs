@@ -1,6 +1,7 @@
 //! XGC subsystem tests.
 
 mod barrier;
+mod card;
 mod mark;
 mod relocate;
 mod slab;
