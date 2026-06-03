@@ -3,6 +3,7 @@
 mod barrier;
 mod card;
 mod diagnostics;
+mod finalize;
 mod log;
 mod mark;
 mod object;
