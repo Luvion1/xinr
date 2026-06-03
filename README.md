@@ -17,7 +17,7 @@
 | `cargo build --features alloc` | ✓ clean, 0 warnings |
 | `cargo clippy --all-targets -- -D warnings` | ✓ 0 warnings (alloc + no_std) |
 | `cargo fmt --check` | ✓ clean |
-| `cargo test --features alloc` | ✓ **277 passed, 0 failed, 7 ignored** |
+| `cargo test --features alloc` | ✓ **280 passed, 0 failed, 7 ignored** |
 | 14 examples | ✓ all run |
 | `.cargo/config.toml` | `jobs = 1` for build & test (memory-safe) |
 
@@ -31,6 +31,7 @@
 | `slab_demo` | SlabAllocator, SlabSize |
 | `scheduler_demo` | Scheduler, parking, timer, waker, fiber |
 | `select_demo` | SPSC, MPSC, select |
+| `select_send_demo` | select_send_4, select_recv_4 |
 | `pingpong` | Fiber, channel |
 | `gc_worker` | XGC + scope + log + work channel + timer + fiber |
 | `cache_demo` | RwLock, parking, metrics, channel |
@@ -84,7 +85,7 @@ cache_padded, **notify**, **waitgroup**, **timed_join**
 - `XGC_DESIGN.md` — high-level design
 - `docs/api/xgc.md` — XGC API reference
 - `docs/api/sync.md` — sync API reference
-- `docs/adr/001-012` — 12 architecture decision records
+- `docs/adr/001-017` — 17 architecture decision records
 - `.github/workflows/ci.yml` — CI pipeline (fmt + clippy + test + examples)
 
 ## License
