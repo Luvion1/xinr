@@ -11,6 +11,7 @@ mod mark;
 mod object;
 mod page;
 mod pin;
+mod pressure;
 mod relocate;
 mod slab;
 mod stress;
