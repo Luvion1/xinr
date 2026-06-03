@@ -3,6 +3,7 @@
 mod barrier;
 mod card;
 mod mark;
+mod pin;
 mod relocate;
 mod slab;
 mod stress;
