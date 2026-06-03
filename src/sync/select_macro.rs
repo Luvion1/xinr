@@ -26,9 +26,6 @@
 //! };
 //! ```
 
-/// Variant returned by `select_recv` and friends.
-pub use super::select::SelectResult;
-
 /// Run the first ready recv arm. Returns the arm body value.
 #[macro_export]
 macro_rules! select {

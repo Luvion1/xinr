@@ -34,9 +34,21 @@ pub fn select_recv_4<T, const N: usize>(
     Ok(None)
 }
 
-/// Poll up to 8 channels.
+/// Poll up to 8 channels. Returns the first one that has data.
 pub fn select_recv_8<T, const N: usize>(
     channels: [&mut BoundedChannel<T, N>; 8],
+) -> Result<Option<SelectResult<T>>, RuntimeError> {
+    for (i, ch) in channels.into_iter().enumerate() {
+        if let Ok(v) = ch.try_recv() {
+            return Ok(Some(SelectResult { index: i, value: v }));
+        }
+    }
+    Ok(None)
+}
+
+/// Poll up to 2 channels. Returns the first one that has data.
+pub fn select_recv_2<T, const N: usize>(
+    channels: [&mut BoundedChannel<T, N>; 2],
 ) -> Result<Option<SelectResult<T>>, RuntimeError> {
     for (i, ch) in channels.into_iter().enumerate() {
         if let Ok(v) = ch.try_recv() {
@@ -65,6 +77,20 @@ pub fn select_send_4<T: Copy, const N: usize>(
 /// variant).
 pub fn select_send_8<T: Copy, const N: usize>(
     channels: [&mut BoundedChannel<T, N>; 8],
+    value: T,
+) -> SendResult {
+    for (i, ch) in channels.into_iter().enumerate() {
+        if ch.try_send(value).is_ok() {
+            return SendResult { accepted: Some(i) };
+        }
+    }
+    SendResult { accepted: None }
+}
+
+/// Try to send `value` to the first channel that has room (2-channel
+/// variant).
+pub fn select_send_2<T: Copy, const N: usize>(
+    channels: [&mut BoundedChannel<T, N>; 2],
     value: T,
 ) -> SendResult {
     for (i, ch) in channels.into_iter().enumerate() {

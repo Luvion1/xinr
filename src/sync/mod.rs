@@ -51,7 +51,8 @@ pub use rwlock::state::RwState;
 pub use scheduler::Scheduler;
 pub use scope::{JoinState, Scope, Task};
 pub use select::{
-    SelectResult, SendResult, select_recv_4, select_recv_8, select_send_4, select_send_8,
+    SelectResult, SendResult, select_recv_2, select_recv_4, select_recv_8, select_send_2,
+    select_send_4, select_send_8,
 };
 pub use semaphore::Semaphore;
 pub use spsc::{MpscChannel, SpscChannel};

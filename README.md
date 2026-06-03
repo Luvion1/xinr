@@ -17,8 +17,8 @@
 | `cargo build --features alloc` | ✓ clean, 0 warnings |
 | `cargo clippy --all-targets -- -D warnings` | ✓ 0 warnings (alloc + no_std) |
 | `cargo fmt --check` | ✓ clean |
-| `cargo test --features alloc` | ✓ **272 passed, 0 failed, 6 ignored** |
-| 13 examples | ✓ all run |
+| `cargo test --features alloc` | ✓ **277 passed, 0 failed, 7 ignored** |
+| 14 examples | ✓ all run |
 | `.cargo/config.toml` | `jobs = 1` for build & test (memory-safe) |
 
 ## Examples
