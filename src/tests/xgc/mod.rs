@@ -7,6 +7,8 @@ mod cycle;
 mod diagnostics;
 mod finalize;
 mod hazard;
+mod heap;
+mod heuristics;
 mod log;
 mod mark;
 mod object;
