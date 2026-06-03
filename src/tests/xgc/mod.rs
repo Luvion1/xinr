@@ -12,6 +12,7 @@ mod object;
 mod page;
 mod pin;
 mod pressure;
+mod profile;
 mod relocate;
 mod slab;
 mod stress;
