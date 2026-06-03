@@ -13,6 +13,7 @@ mod page;
 mod pin;
 mod pressure;
 mod profile;
+mod region;
 mod relocate;
 mod sched;
 mod slab;
