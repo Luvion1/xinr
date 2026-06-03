@@ -8,7 +8,7 @@
 #![cfg(feature = "alloc")]
 
 use xinr::sync::channel::BoundedChannel;
-use xinr::sync::select::{SelectResult, select_recv_4};
+use xinr::sync::select::{SelectResult, select_recv_4, select_send_4};
 use xinr::sync::spsc::{MpscChannel, SpscChannel};
 
 fn main() {
@@ -60,6 +60,24 @@ fn main() {
         next = select_recv_4([&mut a, &mut b, &mut c, &mut d]).unwrap();
     }
     println!("  -> all channels empty");
+
+    // ---- 4. select_send_4 demo ----
+    let mut x: BoundedChannel<u32, 2> = BoundedChannel::new();
+    let mut y: BoundedChannel<u32, 2> = BoundedChannel::new();
+    let mut z: BoundedChannel<u32, 2> = BoundedChannel::new();
+    let mut w: BoundedChannel<u32, 2> = BoundedChannel::new();
+
+    // Fill all but z.
+    x.try_send(0).unwrap();
+    y.try_send(0).unwrap();
+    w.try_send(0).unwrap();
+
+    let r = select_send_4([&mut x, &mut y, &mut z, &mut w], 42);
+    println!(
+        "\nselect_send_4: 3/4 full, send picks z: accepted={:?}",
+        r.accepted
+    );
+    assert_eq!(r.accepted, Some(2));
 
     println!("\nSelect demo complete.");
 }

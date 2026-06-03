@@ -1,36 +1,55 @@
 //! `select!` macro: ergonomic multi-channel polling.
 //!
-//! Polls up to 8 channels and runs the first ready arm. Returns
-//! `(index, value)` if one channel had data, or `None` if all were empty.
+//! Polls up to 8 channels and runs the first ready arm.
 //!
-//! # Example
+//! # recv! arm
+//!
+//! Each arm is a `recv(channel)` expression which returns the arm body.
+//! First arm to have data wins.
 //!
 //! ```ignore
-//! let mut a: BoundedChannel<u32, 4> = BoundedChannel::new();
-//! let mut b: BoundedChannel<u32, 4> = BoundedChannel::new();
-//! a.try_send(42).unwrap();
 //! let result = select! {
-//!     idx(0) = recv(a) => idx,
-//!     idx(1) = recv(b) => idx,
+//!     0 => recv(a) => idx,
+//!     1 => recv(b) => idx,
 //! };
-//! assert_eq!(result, Some(0));
+//! ```
+//!
+//! # send! arm (select_send! macro)
+//!
+//! Each arm is a `send(channel, value)` expression. First arm that can
+//! accept wins.
+//!
+//! ```ignore
+//! let r = select_send! {
+//!     0 => send(a, 42) => idx,
+//!     1 => send(b, 43) => idx,
+//! };
 //! ```
 
 /// Variant returned by `select_recv` and friends.
 pub use super::select::SelectResult;
 
-/// Run the first ready arm. Each arm is a `recv(channel)` expression; the
-/// first one that returns a value wins.
+/// Run the first ready recv arm. Returns the arm body value.
 #[macro_export]
 macro_rules! select {
-    ($($idx:expr => recv($ch:expr) => $arm:expr),* $(,)?) => {{
-        // Probe in order; first non-empty wins.
+    ($($idx:literal => recv($ch:expr) => $arm:expr),* $(,)?) => {{
         $(
-            if let Ok(_v) = $ch.try_recv() {
+            if $ch.try_recv().is_ok() {
                 #[allow(unreachable_patterns)]
-                match $idx {
-                    _ => Some($arm),
-                }
+                Some($arm)
+            } else
+        )*
+        { None }
+    }};
+}
+
+/// Run the first ready send arm. Returns the arm body value.
+#[macro_export]
+macro_rules! select_send {
+    ($($idx:literal => send($ch:expr, $val:expr) => $arm:expr),* $(,)?) => {{
+        $(
+            if $ch.try_send($val).is_ok() {
+                Some($arm)
             } else
         )*
         { None }
