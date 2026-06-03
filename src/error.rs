@@ -20,29 +20,32 @@ pub enum RuntimeError {
     /// XGC is already initialized for this process.
     AlreadyInitialized = 2,
 
+    /// A mark cycle is already in progress.
+    AlreadyMarking = 3,
+
     /// XGC has not been initialized; call `Xgc::init()` first.
-    NotInitialized = 3,
+    NotInitialized = 4,
 
     /// Fiber stack overflow: limit exceeded.
-    StackOverflow = 4,
+    StackOverflow = 5,
 
     /// No parking permit available for the current thread.
-    NoParkingPermit = 5,
+    NoParkingPermit = 6,
 
     /// Invalid region index (out of bounds).
-    InvalidRegion = 6,
+    InvalidRegion = 7,
 
     /// Channel/scope is disconnected; sender or receiver was dropped.
-    Disconnected = 7,
+    Disconnected = 8,
 
     /// Operation would block (try_send/try_recv).
-    WouldBlock = 8,
+    WouldBlock = 9,
 
     /// Channel or scope is closed.
-    Closed = 9,
+    Closed = 10,
 
     /// Operation timed out.
-    TimedOut = 10,
+    TimedOut = 11,
 }
 
 impl RuntimeError {
@@ -80,6 +83,7 @@ impl fmt::Display for RuntimeError {
             Self::Ok => "ok",
             Self::OutOfMemory => "out of memory",
             Self::AlreadyInitialized => "already initialized",
+            Self::AlreadyMarking => "already marking",
             Self::NotInitialized => "not initialized",
             Self::StackOverflow => "stack overflow",
             Self::NoParkingPermit => "no parking permit",
@@ -135,8 +139,8 @@ mod tests {
     fn code_matches_variant_index() {
         assert_eq!(RuntimeError::Ok.code(), 0);
         assert_eq!(RuntimeError::OutOfMemory.code(), 1);
-        assert_eq!(RuntimeError::Closed.code(), 9);
-        assert_eq!(RuntimeError::TimedOut.code(), 10);
+        assert_eq!(RuntimeError::Closed.code(), 10);
+        assert_eq!(RuntimeError::TimedOut.code(), 11);
     }
 
     #[test]
@@ -162,6 +166,7 @@ mod tests {
             RuntimeError::WouldBlock,
             RuntimeError::Closed,
             RuntimeError::TimedOut,
+            RuntimeError::AlreadyMarking,
         ] {
             assert!(render_len(e) > 0);
         }

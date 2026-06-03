@@ -1,3 +1,3 @@
-//! Heap tests.
+//! Heap allocator tests.
 
-mod xgc_state;
+mod allocator_integration;
