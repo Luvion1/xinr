@@ -17,25 +17,25 @@ pub struct Region {
 }
 
 impl Region {
-/// Create a bound region with a real memory base address.
-pub const fn new(base: *mut u8) -> Self {
-    Self {
-        start: base,
-        used: 0,
-        capacity: REGION_SIZE,
-        occupied: false,
+    /// Create a bound region with a real memory base address.
+    pub const fn new(base: *mut u8) -> Self {
+        Self {
+            start: base,
+            used: 0,
+            capacity: REGION_SIZE,
+            occupied: false,
+        }
     }
-}
 
-/// Create an unbound region placeholder.
-pub const fn unbound() -> Self {
-    Self {
-        start: core::ptr::null_mut(),
-        used: 0,
-        capacity: REGION_SIZE,
-        occupied: false,
+    /// Create an unbound region placeholder.
+    pub const fn unbound() -> Self {
+        Self {
+            start: core::ptr::null_mut(),
+            used: 0,
+            capacity: REGION_SIZE,
+            occupied: false,
+        }
     }
-}
 
     /// Whether the region can accept new allocations.
     pub fn is_available(&self) -> bool {
