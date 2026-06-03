@@ -189,6 +189,11 @@ impl Xgc {
             .should_trigger(&config, &self.pressure, self.cycle_count)
     }
 
+    /// Forward a pointer through the relocation map if active.
+    pub fn forward(&self, ptr: ColoredPtr) -> ColoredPtr {
+        self.relocator.forward(ptr)
+    }
+
     /// Total heap size in bytes.
     pub fn heap_size(&self) -> u64 {
         (self.num_regions * crate::xgc::region::REGION_SIZE) as u64
