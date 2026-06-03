@@ -6,6 +6,7 @@ mod colored;
 mod cycle;
 mod diagnostics;
 mod finalize;
+mod hazard;
 mod log;
 mod mark;
 mod object;
