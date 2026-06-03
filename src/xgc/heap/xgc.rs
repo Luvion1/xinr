@@ -187,7 +187,8 @@ impl Xgc {
         let config = PressureConfig::default_for(
             (self.num_regions * crate::xgc::region::REGION_SIZE) as u64,
         );
-        self.trigger.should_trigger(&config, &self.pressure, self.cycle_count)
+        self.trigger
+            .should_trigger(&config, &self.pressure, self.cycle_count)
     }
 
     /// Forward a pointer through the relocation map if active.
