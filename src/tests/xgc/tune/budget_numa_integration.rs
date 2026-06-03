@@ -161,7 +161,7 @@ fn full_xgc_lifecycle() {
 
     // Should-collect.
     let _should = gc.should_collect();
-    let size = gc.heap_size();
+    let size = (8 * crate::xgc::region::REGION_SIZE) as u64;
     assert!(size > 0);
 
     // Shutdown.

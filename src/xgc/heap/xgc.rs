@@ -184,18 +184,14 @@ impl Xgc {
     /// Decide whether to start a new GC cycle based on allocation pressure.
     pub fn should_collect(&self) -> bool {
         use crate::xgc::pressure::threshold::PressureConfig;
-        let config = PressureConfig::default_for(self.heap_size());
-        self.trigger
-            .should_trigger(&config, &self.pressure, self.cycle_count)
+        let config = PressureConfig::default_for(
+            (self.num_regions * crate::xgc::region::REGION_SIZE) as u64,
+        );
+        self.trigger.should_trigger(&config, &self.pressure, self.cycle_count)
     }
 
     /// Forward a pointer through the relocation map if active.
     pub fn forward(&self, ptr: ColoredPtr) -> ColoredPtr {
         self.relocator.forward(ptr)
-    }
-
-    /// Total heap size in bytes.
-    pub fn heap_size(&self) -> u64 {
-        (self.num_regions * crate::xgc::region::REGION_SIZE) as u64
     }
 }
