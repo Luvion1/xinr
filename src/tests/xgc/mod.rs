@@ -2,6 +2,7 @@
 
 mod barrier;
 mod card;
+mod cycle;
 mod diagnostics;
 mod finalize;
 mod log;
