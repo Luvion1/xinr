@@ -67,9 +67,12 @@ fn main() {
     let mut z: BoundedChannel<u32, 2> = BoundedChannel::new();
     let mut w: BoundedChannel<u32, 2> = BoundedChannel::new();
 
-    // Fill all but z.
+    // Fill x, y, w to capacity (2 each).
+    x.try_send(0).unwrap();
     x.try_send(0).unwrap();
     y.try_send(0).unwrap();
+    y.try_send(0).unwrap();
+    w.try_send(0).unwrap();
     w.try_send(0).unwrap();
 
     let r = select_send_4([&mut x, &mut y, &mut z, &mut w], 42);
