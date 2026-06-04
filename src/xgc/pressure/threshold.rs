@@ -65,7 +65,7 @@ impl PressureMeter {
         self.allocated = 0;
     }
 
-/// Live bytes (allocated - freed, never negative).
+    /// Live bytes (allocated - freed, never negative).
     pub fn live(&self) -> u64 {
         self.allocated.saturating_sub(self.freed)
     }

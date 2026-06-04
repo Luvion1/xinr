@@ -5,12 +5,21 @@ pub struct ReadGuard<'a> {
 
 impl<'a> ReadGuard<'a> {
     pub(crate) fn new(state: &'a super::state::RwState) -> Self {
-        Self { state, released: false }
+        Self {
+            state,
+            released: false,
+        }
     }
 
-    pub fn is_released(&self) -> bool { self.released }
-    pub fn reader_count(&self) -> u32 { self.state.reader_count() }
-    pub fn is_write_held(&self) -> bool { self.state.is_write() }
+    pub fn is_released(&self) -> bool {
+        self.released
+    }
+    pub fn reader_count(&self) -> u32 {
+        self.state.reader_count()
+    }
+    pub fn is_write_held(&self) -> bool {
+        self.state.is_write()
+    }
 
     pub fn release(mut self) {
         if !self.released {
