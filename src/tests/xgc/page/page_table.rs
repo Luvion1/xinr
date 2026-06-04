@@ -5,7 +5,7 @@ use crate::xgc::page::table::PageTable;
 #[test]
 fn page_table_has_pages() {
     let pt = PageTable::new();
-    assert!(pt.len() > 0);
+    assert!(!pt.is_empty());
 }
 
 #[test]

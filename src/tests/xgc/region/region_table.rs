@@ -5,7 +5,7 @@ use crate::xgc::region::table::RegionTable;
 #[test]
 fn region_table_creates_regions() {
     let rt = RegionTable::new(8).unwrap();
-    assert!(rt.len() > 0);
+    assert!(!rt.is_empty());
 }
 
 #[test]

@@ -59,7 +59,7 @@ impl RwState {
         unsafe {
             let r = self.readers.get();
             let cur = *r;
-            if cur >= i32::MAX {
+            if cur == i32::MAX {
                 return false;
             }
             *r = cur + 1;
