@@ -48,7 +48,6 @@ pub struct Xgc {
 struct LiveObject {
     base: *mut u8,
     total_bytes: usize,
-    color: Color,
 }
 
 impl Xgc {
@@ -187,7 +186,6 @@ impl Xgc {
             self.live_objects.push(LiveObject {
                 base,
                 total_bytes: total,
-                color: Color::White,
             });
             Ok(unsafe { base.add(mem::size_of::<ObjectHeader>()) })
         }
@@ -209,7 +207,7 @@ impl Xgc {
             let mut remaining = Vec::new();
 
             for obj in self.live_objects.drain(..) {
-                let hdr = unsafe { obj.base as *const ObjectHeader };
+                let hdr = obj.base as *const ObjectHeader;
                 let color = unsafe { (*hdr).color() };
                 if color == Color::White && !self.pins.is_pinned(ColoredPtr::new(obj.base as usize, Color::White)) {
                     let layout = Layout::from_size_align(obj.total_bytes, Alignment::A64.bytes()).unwrap();
@@ -261,5 +259,9 @@ impl Xgc {
 
     pub fn forward(&self, ptr: ColoredPtr) -> ColoredPtr {
         self.relocator.forward(ptr)
+    }
+
+    pub fn heap_size(&self) -> usize {
+        self.num_regions * crate::xgc::region::REGION_SIZE
     }
 }
